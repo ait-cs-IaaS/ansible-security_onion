@@ -1,0 +1,36 @@
+---
+- name: Install git requirements
+  tags: [requirements]
+  become: true
+  apt:
+    name: "{{ security_onion_requirements }}"
+    state: present
+    update_cache: true
+
+- name: Git clone security_onion repo
+  become: true
+  git:
+    repo: "{{ security_onion_git_repo }}"
+    dest: /opt/security_onion
+    version: "{{ security_onion_git_version }}"
+    depth: 1
+
+- name: Copy SecurityOnion Automated installation Template
+  become: true
+  template:
+    src: ansible-automation.j2
+    dest: "/opt/security_onion/setup/automation/ansible-automation"
+    mode: '0644'
+
+- name: Copy SecurityOnion Automated installation Script
+  become: true
+  copy:
+    src: "so-automated-setup"
+    dest: "/opt/security_onion/setup/so-automated-setup"
+    mode: '0755'
+
+- name: Start SecurityOnion installation
+  command:
+    chdir: /opt/security_onion/setup/
+    cmd: /opt/security_onion/setup/so-automated-setup
+    creates: /opt/so/

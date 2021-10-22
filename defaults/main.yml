@@ -1,0 +1,13 @@
+---
+security_onion_git_version: "master"
+security_onion_requirements:
+  - git
+  - sshpass
+  - curl
+  - docker-ce
+  - python3-docker
+
+securityonion_adminuser: onionuser
+securityonion_adminpassword: onionuser
+securityonion_allow_cidr: "0.0.0.0/0"
+securityonion_allow_role: a
