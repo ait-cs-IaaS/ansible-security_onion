@@ -5,7 +5,8 @@ Installs [Security Onion](https://github.com/Security-Onion-Solutions/securityon
 ## Requirements
 
 - Ansible 2.10+
-- Ubuntu
+- Ubuntu >= 18.04
+- CentOS >= 7
 
 ## Dependencies
 

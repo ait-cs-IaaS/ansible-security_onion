@@ -1,36 +1,23 @@
 ---
-- name: Install git requirements
-  tags: [requirements]
-  become: true
-  apt:
-    name: "{{ security_onion_requirements }}"
-    state: present
-    update_cache: true
+- name: Load a variable file based on the OS type
+  include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_os_family }}.yml'
+    - default.yaml
 
-- name: Git clone security_onion repo
-  become: true
-  git:
-    repo: "{{ security_onion_git_repo }}"
-    dest: /opt/security_onion
-    version: "{{ security_onion_git_version }}"
-    depth: 1
+- name: Security Onion installation for CentOS iso
+  include_tasks: centos.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: Copy SecurityOnion Automated installation Template
-  become: true
-  template:
-    src: ansible-automation.j2
-    dest: "/opt/security_onion/setup/automation/ansible-automation"
-    mode: '0644'
+- name: Security Onion installation for on plain ubuntu via git
+  include_tasks: ubuntu.yml
+  when: ansible_os_family == 'Debian'
 
-- name: Copy SecurityOnion Automated installation Script
-  become: true
-  copy:
-    src: "so-automated-setup"
-    dest: "/opt/security_onion/setup/so-automated-setup"
-    mode: '0755'
+- name: Check if global.sls exists
+  stat:
+    path: "{{ securityonion_salt_globalconfig }}"
+  register: global_sls
 
-- name: Start SecurityOnion installation
-  command:
-    chdir: /opt/security_onion/setup/
-    cmd: /opt/security_onion/setup/so-automated-setup
-    creates: /opt/so/
+- name: Configure SecurityOnion via global.sls
+  include_tasks: configure.yml
+  when: global_sls.stat.exists

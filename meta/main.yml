@@ -5,12 +5,18 @@ galaxy_info:
   company: AIT
 
   license: GPL-3
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+    - name: CentOS
+      versions:
+        - 7
 
   min_ansible_version: 2.10
 
   galaxy_tags: ["security_onion"]
 
-dependencies: []
-  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
-  # if you add dependencies to this list.
-  
+dependencies:
+  - src: kwoodson.yedit

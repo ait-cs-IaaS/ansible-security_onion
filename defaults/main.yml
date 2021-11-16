@@ -7,7 +7,18 @@ security_onion_requirements:
   - docker-ce
   - python3-docker
 
+securityonion_salt_globalconfig: "{{ securityonion_install_source }}/saltstack/local/pillar/global.sls"
+
 securityonion_adminuser: onionuser
 securityonion_adminpassword: onionuser
 securityonion_allow_cidr: "0.0.0.0/0"
 securityonion_allow_role: a
+securityonion_adminemail: "{{ securityonion_adminuser }}@cyberrange.at"
+securityonion_install_type: EVAL
+
+securityonion_osquery: true
+securityonion_strelka: true
+securityonion_thehive: true
+securityonion_wazuh: true
+securityonion_playbook: true
+securityonion_grafana: true

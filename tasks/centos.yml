@@ -1,0 +1,33 @@
+---
+- name: Copy SecurityOnion Automated installation Template
+  become: true
+  template:
+    src: ansible-automation.j2
+    dest: "{{ securityonion_install_source }}/setup/automation/ansible-automation"
+    mode: '0644'
+
+- name: upgrade all packages  # noqa package-latest
+  yum:
+    name: "*"
+    update_cache: true
+    state: latest
+
+- name: Do not configure sensor network yet
+  replace:
+    path: "{{ securityonion_install_source }}/setup/so-setup"
+    regexp: '(.*configure_network_sensor.*)'
+    replace: '#\1'
+
+- name: symlink installdir to userhome
+  become: true
+  file:
+    src: "{{ securityonion_install_source }}"
+    dest: /home/centos/SecurityOnion
+    state: link
+
+- name: Start SecurityOnion installation
+  become: true
+  command:
+    chdir: "{{ securityonion_install_source }}/setup/"
+    cmd: "{{ securityonion_install_source }}/setup/so-setup iso ansible-automation"
+    creates: "{{ securityonion_salt_globalconfig }}"
