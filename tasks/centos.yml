@@ -31,3 +31,5 @@
     chdir: "{{ securityonion_install_source }}/setup/"
     cmd: "{{ securityonion_install_source }}/setup/so-setup iso ansible-automation"
     creates: "{{ securityonion_salt_globalconfig }}"
+  ignore_errors: true
+
