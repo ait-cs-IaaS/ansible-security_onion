@@ -22,3 +22,6 @@ securityonion_thehive: true
 securityonion_wazuh: true
 securityonion_playbook: true
 securityonion_grafana: true
+
+securityonion_management_nic: "{{ ansible_default_ipv4.interface }}"
+securityonion_bonding_nic: "{{ ansible_default_ipv4.interface }}"

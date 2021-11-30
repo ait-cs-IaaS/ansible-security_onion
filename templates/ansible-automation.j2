@@ -6,9 +6,8 @@ OS={{ ansible_distribution | lower }}
 OSVER={{ ansible_distribution_release | lower }}
 
 HOSTNAME={{ ansible_hostname }}
-BNICS={{ ansible_default_ipv4.interface }}
-MNIC={{ ansible_default_ipv4.interface }}
-
+BNICS={{ securityonion_bonding_nic }}
+MNIC={{ securityonion_management_nic }}
 
 ADMINUSER={{ securityonion_adminuser }}
 ADMINPASS1={{ securityonion_adminpassword }}

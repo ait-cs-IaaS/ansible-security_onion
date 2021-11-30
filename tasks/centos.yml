@@ -7,12 +7,14 @@
     mode: '0644'
 
 - name: upgrade all packages  # noqa package-latest
+  become: true
   yum:
     name: "*"
     update_cache: true
     state: latest
 
 - name: Do not configure sensor network yet
+  become: true
   replace:
     path: "{{ securityonion_install_source }}/setup/so-setup"
     regexp: '(.*configure_network_sensor.*)'
@@ -22,7 +24,7 @@
   become: true
   file:
     src: "{{ securityonion_install_source }}"
-    dest: /home/centos/SecurityOnion
+    dest: /home/ait/SecurityOnion
     state: link
 
 - name: Start SecurityOnion installation
@@ -31,5 +33,5 @@
     chdir: "{{ securityonion_install_source }}/setup/"
     cmd: "{{ securityonion_install_source }}/setup/so-setup iso ansible-automation"
     creates: "{{ securityonion_salt_globalconfig }}"
-  ignore_errors: true
-
+  register: command_result
+  failed_when: "'ERROR' in command_result.stderr"
