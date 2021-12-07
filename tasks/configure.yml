@@ -4,11 +4,11 @@
   yedit:
     src: "{{ securityonion_salt_globalconfig }}"
     key: managerip
-    value: "{{ ansible_default_ipv4.address }}"
+    value: "{{ securityonion_management_nic }}"
 
 - name: Set url_base in global.sls
   become: true
   yedit:
     src: "{{ securityonion_salt_globalconfig }}"
     key: url_base
-    value: "{{ ansible_default_ipv4.address }}"
+    value: "{{ securityonion_management_nic }}"
